@@ -1,15 +1,10 @@
-#All 3 function takes int data-type
-#for OR gate
+def or_gate(a: int, b: int) -> int:
+    return a | b
 
-def orGate(a,b):
-    return a|b
 
-#for AND gate
+def and_gate(a: int, b: int) -> int:
+    return a & b
 
-def andGate(a,b):
-    return a&b
 
-#for XOR gate
-
-def xorGate(a,b):
-    return a^b
+def xor_gate(a: int, b: int) -> int:
+    return a ^ b

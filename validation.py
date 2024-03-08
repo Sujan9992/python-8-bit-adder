@@ -1,13 +1,32 @@
-#It takes string data type as input
-#for checking binary number consists only of 0 or 1
-def binaryValidate(num):
-    binVal = False
-    digits = '01'
-    for i  in num:
-        if i in digits:
-            binVal = True
-        else:
-            binVal = False
-            break
-    return binVal
-# It returns boolean value
+import strings
+
+
+def is_binary(num: str) -> bool:
+    for digit in num:
+        if digit not in "01":
+            return False
+    return True
+
+
+def check_num(num: int) -> int:
+    match num:
+        case num if num > 255:
+            print(strings.error1)
+            return 1
+        case num if num < 0:
+            print(strings.error2)
+            return 1
+        case _:
+            return 0
+
+
+def check_binary(num: int) -> int:
+    match num:
+        case num if num > 11111111:
+            print(strings.error4)
+            return 1
+        case num if num < 0:
+            print(strings.error2)
+            return 1
+        case _:
+            return 0

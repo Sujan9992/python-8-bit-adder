@@ -1,33 +1,27 @@
-# Binary and decimal function takes int data-type
-# Converting Binary to Decimal
-
-def binToDec(num):
-    value = 0
-    a = 0
-    while num>0:
-        value = value + 2**a*(num%10)
-        num = int(num//10)
-        a = a+1
+def binary_to_decimal(num: int) -> int:
+    value: int = 0
+    power: int = 0
+    while num > 0:
+        value += 2**power * (num % 10)
+        num //= 10
+        power += 1
     return value
 
-# Converting Decimal to binary
 
-def decToBin(num):
-    list = ["0","0","0","0","0","0","0","0"]
-    i = 7
-    while num>0:
-        value = num%2
-        list[i] = str(value)
-        num = int(num//2)
-        i = i-1
-    return"".join(list)
+def decimal_to_binary(num: int) -> str:
+    binary_list: list[str] = ["0"] * 8
+    index: int = 7
+    while num > 0:
+        value = num % 2
+        binary_list[index] = str(value)
+        num //= 2
+        index -= 1
+    return "".join(binary_list)
 
-# It takes string data type
-# converting binary number to 8-bit binary
 
-def convert(string):
-    eightBit=string
-    if(len(string)!=8):
-        for i in range(len(string),8):
-            eightBit="0"+eightBit
-    return eightBit
+def convert_to_eight_bit(string: str) -> int:
+    eight_bit = string
+    if len(string) != 8:
+        for _ in range(len(string), 8):
+            eight_bit = "0" + eight_bit
+    return int(eight_bit)

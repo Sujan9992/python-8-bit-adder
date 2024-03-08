@@ -1,255 +1,114 @@
-from adder import *
-from validation import *
-from conversion import *
-# It is the main function to carry out all operations
-def main():
-    print('''                      Welcome to the 8-bit Adder Program
-              -------------Developed by Sujan Thapa-------------''')
-    flag = False
-    while (not flag):
-        # Taking suitable data type from user
-        dataType = input("Enter d or D for decimal and Enter b or B for binary: ")
-        if dataType in ["d","D"]:
-            print('''
-                        +-------------------------------------------+
-                        |               Information                 |
-                        +-------------------------------------------+
-                        |   You have selected Decimal number System |
-                        +-------------------------------------------+
-                        |     Enter number ranging from  0-255      |
-                        +-------------------------------------------+
+import strings
+from adder import binary_adder, decimal_adder
+from conversion import binary_to_decimal, convert_to_eight_bit, decimal_to_binary
+from validation import check_binary, check_num, is_binary
 
-                        ''')
-            while(not flag):
+welcome: str = "Welcome to the 8-bit Adder Program"
+data_type: str = "Enter d/D for decimal or b/B for binary: "
+
+
+def main() -> None:
+    print(f"{welcome:-^60}")
+
+    # flag: bool = False
+    while True:
+        try:
+            dataType = input(data_type).strip()
+        except EOFError:
+            continue
+        if dataType in ["d", "D"]:
+            print(strings.decimal_info)
+            while True:
                 try:
-                    dec1 = int(input("Enter first decimal number: "))
-                    if dec1>255:
-                        print('''
-                        +-------------------------------------------+
-                        |                  ERROR                    |
-                        +-------------------------------------------+
-                        |   Do not enter number greater than 255    |
-                        +-------------------------------------------+
-
-                        ''')
-                    elif dec1<0:
-                        print('''
-                        +-------------------------------------------+
-                        |                  ERROR                    |
-                        +-------------------------------------------+
-                        |        Do not enter negative number       |
-                        +-------------------------------------------+
-
-                        ''')
-                    else:
-                        break
-                except:
-                    # showing proper message after finding error
-                    print('''
-                        +------------------------------------------------+
-                        |                     ERROR                      |
-                        +------------------------------------------------+
-                        | No special characters and empty spaces allowed |
-                        +------------------------------------------------+
-
-                        ''')
-                    flag = False
-            while(not flag):
-                try:
-                    dec2 = int(input("Enter second decimal number: "))
-                    if dec2>255:
-                        print('''
-                        +-------------------------------------------+
-                        |                  ERROR                    |
-                        +-------------------------------------------+
-                        |   Do not enter number greater than 255    |
-                        +-------------------------------------------+
-
-                        ''')
+                    decimal1 = int(input("Enter first decimal number: "))
+                    if check_num(decimal1) == 1:
                         continue
-                    dec_sum = dec1+dec2
-                    if dec_sum>255:
-                        print('''
-                        +-----------------------------------------------+
-                        |                    ERROR                      |
-                        +-----------------------------------------------+
-                        |  The sum of two number must be less than 255  |
-                        +-----------------------------------------------+
-
-                        ''')
-                    else:
-                        firstNum = decToBin(dec1)
-                        secondNum = decToBin(dec2)
-                        value = decBitAdder(dec1,dec2)
-                        print(f'''
-                        +-----------------------------------------------------+
-                        |                   Decimal System                    |
-                        +---------------+-------------------------------------+
-                        |   Variables   |              Output                 |
-                        +---------------+-------------------------------------+
-                          First nummber |In Decimal      - {dec1}
-                                        |In 8-bit Binary - {firstNum}
-                        +-----------------------------------------------------+
-                          Second number |In Decimal      -  {dec2}
-                                        |In 8-bit Binary -  {secondNum}
-                        +-----------------------------------------------------+
-                          8-bit output  |In Decimal      -  {dec_sum}
-                                        |In 8-bit Binary -  {value}
-                        +---------------+-------------------------------------+
-                        ''')
-                        try:
-                            resume = False
-                            while(not resume):
-                                inputResume = input("Enter [Y/y] to continue or [N/n] to quit: ")
-                                if inputResume in ["Y","y"]:
-                                    main()
-                                elif inputResume in ["N","n"]:
-                                    return
-                        except:
-                            print("Enter either [Y/y] or [N/n]: ")
-                            break
-                except:
-                    print("No special characters and empty spaces allowed")
-                    flag = False
-
-        elif dataType in ["b","B"]:
-            print('''
-                        +-------------------------------------------+
-                        |               Information                 |
-                        +-------------------------------------------+
-                        | You have selected Binary number System    |
-                        +-------------------------------------------+
-                        |   Enter number ranging from  0-11111111   |
-                        +-------------------------------------------+
-
-                        ''')
-            while(not flag):
+                except ValueError:
+                    print(strings.error3)
+                    continue
+                else:
+                    break
+            while True:
                 try:
-                    bin1 = int(input("Enter first binary number: "))
-                    if bin1>11111111:
-                        print('''
-                        +-------------------------------------------+
-                        |                  ERROR                    |
-                        +-------------------------------------------+
-                        |Do not enter number greater than 11111111  |
-                        +-------------------------------------------+
-
-                        ''')
-                    elif bin1<0:
-                        print('''
-                        +-------------------------------------------+
-                        |                  ERROR                    |
-                        +-------------------------------------------+
-                        |        Do not enter negative number       |
-                        +-------------------------------------------+
-
-                        ''')
-                    elif binaryValidate(str(bin1))==False:
-                        print('''
-                        +-------------------------------------------+
-                        |                  ERROR                    |
-                        +-------------------------------------------+
-                        |            Enter either 0 or 1            |
-                        +-------------------------------------------+
-
-                        ''')
-                    else:
-                        break
-                except:
-                    print('''
-                        +------------------------------------------------+
-                        |                     ERROR                      |
-                        +------------------------------------------------+
-                        | No special characters and empty spaces allowed |
-                        +------------------------------------------------+
-
-                        ''')
-                    flag = False
-            while(not flag):
+                    decimal2 = int(input("Enter second decimal number: "))
+                    if check_num(decimal2) == 1:
+                        continue
+                    decimal_sum: int = decimal1 + decimal2
+                    if decimal_sum > 255:
+                        print(strings.info1)
+                        continue
+                except ValueError:
+                    print(strings.error3)
+                    continue
+                else:
+                    binary1 = int(decimal_to_binary(decimal1))
+                    binary2 = int(decimal_to_binary(decimal2))
+                    binary_sum = int(decimal_adder(decimal1, decimal2))
+                    break
+        elif dataType in ["b", "B"]:
+            print(strings.binary_info)
+            while True:
                 try:
-                    bin2 = int(input("Enter second binary number: "))
-                    if bin2>11111111:
-                        print('''
-                        +-------------------------------------------+
-                        |                  ERROR                    |
-                        +-------------------------------------------+
-                        |Do not enter number greater than 11111111  |
-                        +-------------------------------------------+
-
-                        ''')
+                    binary1 = int(input("Enter first binary number: "))
+                    if is_binary(str(binary1)) is False:
+                        print(strings.error7)
                         continue
-                    if binaryValidate(str(bin2))==False:
-                        print('''
-                        +-------------------------------------------+
-                        |                  ERROR                    |
-                        +-------------------------------------------+
-                        |            Enter either 0 or 1            |
-                        +-------------------------------------------+
-
-                        ''')
+                    if check_binary(binary1) == 1:
                         continue
-                    bin_sum = bin1+bin2
-                    if bin_sum>11111111:
-                        print('''
-                        +------------------------------------------------+
-                        |                     ERROR                      |
-                        +------------------------------------------------+
-                        |The sum of two number must be less than 11111111|
-                        +------------------------------------------------+
-
-                        ''')
-                    else:
-                        con1 = convert(str(bin1))
-                        decs = binToDec(bin1)
-                        decss = binToDec(bin2)
-                        con2 = convert(str(bin2))
-                        binS = binToDec(bin_sum)
-                        values = binBitAdder(bin1,bin2)
-                        print(f'''
-                        +-------------------------------------------+
-                        |                Binary System              |
-                        +---------------+---------------------------+
-                        |   Variables   |           Output          |
-                        +---------------+---------------------------+
-                          First nummber |In 8-bit   - {con1}
-                                        |In Decimal - {decs}
-                        +-------------------------------------------+
-                          Second number |In 8-bit   - {con2}
-                                        |In Decimal - {decss}
-                        +-------------------------------------------+
-                          8-bit output  |In 8-bit   - {values}
-                                        |In Decimal - {binS}
-                        +---------------+---------------------------+
-                        ''')
-                        try:
-                            resumes = False
-                            while(not resumes):
-                                inputResumes = input("Enter [Y/y] to continue or [N/n] to quit: ")
-                                if inputResumes in ["Y","y"]:
-                                    main()
-                                elif inputResumes in ["N","n"]:
-                                    return
-                        except:
-                            print("Enter either [Y/y] or [N/n]")
-                            flag = True
-                            break
-                except:
-                    print('''
-                        +------------------------------------------------+
-                        |                     ERROR                      |
-                        +------------------------------------------------+
-                        | No special characters and empty spaces allowed |
-                        +------------------------------------------------+
-
-                        ''')
-                    flag = False
+                except ValueError:
+                    print(strings.error3)
+                    continue
+                else:
+                    break
+            while True:
+                try:
+                    binary2 = int(input("Enter second binary number: "))
+                    if is_binary(str(binary2)) is False:
+                        print(strings.error7)
+                        continue
+                    if check_binary(binary2) == 1:
+                        continue
+                    binary_sum = binary1 + binary2
+                    if binary_sum > 11111111:
+                        print(strings.error6)
+                        continue
+                except ValueError:
+                    print(strings.error3)
+                    continue
+                else:
+                    binary1 = convert_to_eight_bit(str(binary1))
+                    decimal1 = binary_to_decimal(binary1)
+                    decimal2 = binary_to_decimal(binary2)
+                    binary2 = convert_to_eight_bit(str(binary2))
+                    binary_sum = int(binary_adder(binary1, binary2))
+                    decimal_sum = binary_to_decimal(binary_sum)
+                    break
         else:
-            print('''
-                        +------------------------------------------------+
-                        |                     ERROR                      |
-                        +------------------------------------------------+
-                        |  Please enter the correct key for data types   |
-                        +------------------------------------------------+
+            print(strings.error5)
+            continue
+        print_result(binary1, binary2, binary_sum, decimal1, decimal2, decimal_sum)
+        if input("Enter [Y/y] to continue: ") not in ["Y", "y"]:
+            break
 
-                        ''')
-main()
+
+def print_result(*args) -> None:
+    print(f"""
+    +-------------------------------------------+
+    |                Binary System              |
+    +-----------------+-------------------------+
+    |   Variables     |         Output          |
+    +-----------------+-------------------------+
+        First number  |In 8-bit   - {args[0]}
+                      |In Decimal - {args[3]}
+    +-------------------------------------------+
+        Second number |In 8-bit   - {args[1]}
+                      |In Decimal - {args[4]}
+    +-------------------------------------------+
+        8-bit output  |In 8-bit   - {args[2]}
+                      |In Decimal - {args[5]}
+    +-----------------+-------------------------+
+    """)
+
+
+if __name__ == "__main__":
+    main()
